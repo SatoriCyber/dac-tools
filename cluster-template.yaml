@@ -1,0 +1,31 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: CLUSTER_NAME
+  region: AWS_REGION
+vpc:
+  #cidr: "10.0.0.0/16"
+  id: VPC_ID
+  subnets: 
+    private:
+      AWS_REGIONa:
+        id: PRIVATE_SUB1_ID
+      AWS_REGIONb:
+        id: PRIVATE_SUB2_ID
+    public: 
+      AWS_REGIONa:
+        id: PUBLIC_SUB1_ID
+      AWS_REGIONb:
+        id: PUBLICS_SUB2_ID
+iam:
+  serviceRoleARN: "arn:aws:iam::ARN_NUMBER:role/EKS_ROLE"
+managedNodeGroups:
+  - name: "satori-nodes-1"
+    instanceType: m5.large 
+    minSize: 2
+    maxSize: 6
+    ssh:
+      allow: true
+    desiredCapacity: 2
+    availabilityZones: ["AWS_REGIONa", "AWS_REGIONb"]
+    privateNetworking: true
