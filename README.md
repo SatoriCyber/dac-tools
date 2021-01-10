@@ -1,5 +1,7 @@
 # eksctl-bootstrap-cluster
 
+This is a tool aimed at assisting [Satori](https://satoricyber.com) customers when they install their Data Access Controllers (DACs) on AWS EKS environments. If you're not a Satori user, you're still welcome to hang around, or visit our website to learn more about how we [simplify data governance for data in the cloud](https://satoricyber.com).
+
 AWS EKS is a managed Kubernetes solution. The creation has shifted to an open-source tool named EKSCTL, and this repository is using this tool for creating the cluster. We created this repository to help with the cluster's initial creation before deploying our software into the AWS EKS cluster.
 
 The cluster created is with managed nodes and connected to your AWS IAM with the role named ESK_ROLE.
