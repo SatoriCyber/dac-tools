@@ -9,7 +9,7 @@ PRIVATE_SUB2_ID="subnet-1a2bc34d"
 PUBLIC_SUB1_ID="subnet-1a2bc34d"
 PUBLICS_SUB2_ID="subnet-1a2bc34d"
 CLUSTER_NAME='satori-dac'
-echo "creation AWS DAC with eksctl"
+echo "Creating an AWS DAC with eksctl"
 # get eksctl.tar.gz
 curl --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" -o "eksctl.tar.gz"
 # open the tar.gz
