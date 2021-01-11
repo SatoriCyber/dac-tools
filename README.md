@@ -17,13 +17,13 @@ https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
 
 The creation script will need the following information to be populated by someone with access to the AWS environment before running:
 
-ARN_NUMBER: Amazon Resource Names (ARNs) uniquely identify AWS resources. The account ARN is used for the cluster creation and permissions distribution.
-example - 123456789012
+`ARN_NUMBER`: Amazon Resource Names (ARNs) uniquely identify AWS resources. The account ARN is used for the cluster creation and permissions distribution.
+example - `123456789012`
 
-AWS_REGION: Amazon is running EKS on the EC2 platform, and the availability is listed on the AWS website: https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/
-example - "us-east-1"
+`AWS_REGION`: Amazon is running EKS on the EC2 platform, and the availability is listed on the AWS website: https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/
+example - `us-east-1`
 
-VPC_ID and SUBNET_ID:  A virtual private cloud (VPC) is a virtual network dedicated to your AWS account. It is logically isolated from other virtual networks in the AWS Cloud. You can launch your AWS resources, such as Amazon EC2 instances, into your VPC.
-VPC example: "vpc-1a2b3c4d"
+`VPC_ID` and `SUBNET_ID`:  A virtual private cloud (VPC) is a virtual network dedicated to your AWS account. It is logically isolated from other virtual networks in the AWS Cloud. You can launch your AWS resources, such as Amazon EC2 instances, into your VPC.
+VPC example: `vpc-1a2b3c4d`
 
 
