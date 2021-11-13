@@ -3,29 +3,96 @@ kind: ClusterConfig
 metadata:
   name: CLUSTER_NAME
   region: AWS_REGION
+  version: "EKS_VERSION"
 vpc:
-  #cidr: "10.0.0.0/16"
-  id: VPC_ID
+  nat:
+     gateway: Single  # other options: HighlyAvailable, Disable, Single (default)
+  clusterEndpoints:
+    publicAccess:  true
+    privateAccess: true
+  # cidr: "10.0.0.0/16"
+  # id: VPC_ID
   subnets: 
     private:
-      AWS_REGIONa:
-        id: PRIVATE_SUB1_ID
-      AWS_REGIONb:
-        id: PRIVATE_SUB2_ID
+      private-a:
+        az: "us-east-1a"
+      private-b:
+        az: "us-east-1b"
+        private-c:
+        az: "us-east-1c"
     public: 
-      AWS_REGIONa:
-        id: PUBLIC_SUB1_ID
-      AWS_REGIONb:
-        id: PUBLICS_SUB2_ID
+      public-a:
+         az: "us-east-1a"
+      public-b:
+         az: "us-east-1b"
+      public-c:
+         az: "us-east-1c"
 iam:
-  serviceRoleARN: "arn:aws:iam::ARN_NUMBER:role/EKS_ROLE"
+  withOIDC: true
+  serviceAccounts:
+    - metadata:
+        name: cluster-autoscaler
+        namespace: kube-system
+      wellKnownPolicies:
+        autoScaler: true
+      roleName: eksctl-cluster-autoscaler-role
+      roleOnly: true
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      wellKnownPolicies:
+        awsLoadBalancerController: true
+
 managedNodeGroups:
   - name: "satori-nodes-1"
+    tags:
+      # EC2 tags required for cluster-autoscaler auto-discovery
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/CLUSTER_NAME: "owned"
     instanceType: m5.large 
-    minSize: 2
-    maxSize: 6
-    ssh:
-      allow: true
-    desiredCapacity: 2
-    availabilityZones: ["AWS_REGIONa", "AWS_REGIONb"]
+    minSize: 1
+    maxSize: 5
+    volumeSize: 50
+    desiredCapacity: 1
     privateNetworking: true
+    availabilityZones: ["us-east-1a"]
+    # subnets:
+    #   - private-a
+  - name: "satori-nodes-2"
+    tags:
+      # EC2 tags required for cluster-autoscaler auto-discovery
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/CLUSTER_NAME: "owned"
+    instanceType: m5.large 
+    minSize: 1
+    maxSize: 5
+    volumeSize: 50
+    desiredCapacity: 1
+    privateNetworking: true
+    availabilityZones: ["us-east-1b"]
+    # subnets:
+    #   - private-b
+  - name: "satori-nodes-3"
+    tags:
+      # EC2 tags required for cluster-autoscaler auto-discovery
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/CLUSTER_NAME: "owned"
+    instanceType: m5.large 
+    minSize: 1
+    maxSize: 5
+    volumeSize: 50
+    desiredCapacity: 1
+    privateNetworking: true
+    availabilityZones: ["us-east-1c"]
+    # subnets:
+    #   - private-c
+
+addons:
+- name: vpc-cni 
+  version: latest
+  attachPolicyARNs:
+    - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+- name: coredns
+  version: latest
+- name: kube-proxy
+  version: latest
