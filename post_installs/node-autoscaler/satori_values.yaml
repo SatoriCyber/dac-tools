@@ -1,0 +1,57 @@
+
+rbac:
+  serviceAccount:
+    name: "cluster-autoscaler"
+
+
+# podAnnotations:
+#   cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+
+extraArgs:
+  logtostderr: true
+  stderrthreshold: info
+  v: 4
+  # write-status-configmap: true
+  # status-config-map-name: cluster-autoscaler-status
+  leader-elect: true
+  skip-nodes-with-local-storage: false
+  expander: least-waste
+  # scale-down-enabled: true
+  balance-similar-node-groups: true
+  min-replica-count: 1
+  # scale-down-utilization-threshold: 0.5
+  # scale-down-non-empty-candidates-count: 30
+  # max-node-provision-time: 15m0s
+  # scan-interval: 10s
+  scale-down-delay-after-add: 10m
+  # scale-down-delay-after-delete: 0s
+  # scale-down-delay-after-failure: 3m
+  scale-down-unneeded-time: 10m
+  skip-nodes-with-system-pods: false
+  # balancing-ignore-label_1: first-label-to-ignore
+  # balancing-ignore-label_2: second-label-to-ignore
+
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+    - labelSelector:
+        matchExpressions:
+          - key: app.kubernetes.io/component
+            operator: In
+            values:
+              - nodeautoscaler
+      topologyKey: 'kubernetes.io/hostname'
+
+additionalLabels:
+  app.kubernetes.io/component: "nodeautoscaler"
+
+replicaCount: 2
+
+# resources -- Pod resource requests and limits.
+resources:
+   limits:
+     cpu: 300m
+     memory: 500Mi
+   requests:
+     cpu: 100m
+     memory: 300Mi
