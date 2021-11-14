@@ -47,7 +47,7 @@ read -p "If everything is ok type 'yes' to start creating the cluster: " CONT
 echo
 if [ "$CONT" = "yes" ]; then
    # cluster creation
-  # ./eksctl create cluster -f ${AWS_REGION}-${CLUSTER_NAME}.yaml
+   ./eksctl create cluster -f ${AWS_REGION}-${CLUSTER_NAME}.yaml
    ./eksctl utils write-kubeconfig --cluster=${CLUSTER_NAME} --region=${AWS_REGION}
    export CLUSTER_NAME=$CLUSTER_NAME
    export AWS_REGION=$AWS_REGION
