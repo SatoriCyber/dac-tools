@@ -43,7 +43,7 @@ sed "s/ZONE_A/${ZONE_A}/g;s/ZONE_B/${ZONE_B}/g;s/ZONE_C/${ZONE_C}/g" ${AWS_REGIO
 
 
 echo -e "\n\n\n\nPlease validate the final cluster config file named ${AWS_REGION}-${CLUSTER_NAME}.yaml. \n\n"
-read -p "If everything is ok type yes to start creating the cluster: " CONT
+read -p "If everything is ok type 'yes' to start creating the cluster: " CONT
 echo
 if [ "$CONT" = "yes" ]; then
    # cluster creation
