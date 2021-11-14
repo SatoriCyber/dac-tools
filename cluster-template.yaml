@@ -4,29 +4,9 @@ metadata:
   name: CLUSTER_NAME
   region: AWS_REGION
   version: "EKS_VERSION"
-vpc:
-  nat:
-     gateway: Single  # other options: HighlyAvailable, Disable, Single (default)
-  clusterEndpoints:
-    publicAccess:  true
-    privateAccess: true
-  # cidr: "10.0.0.0/16"
-  # id: VPC_ID
-  subnets: 
-    private:
-      private-a:
-        az: "us-east-1a"
-      private-b:
-        az: "us-east-1b"
-        private-c:
-        az: "us-east-1c"
-    public: 
-      public-a:
-         az: "us-east-1a"
-      public-b:
-         az: "us-east-1b"
-      public-c:
-         az: "us-east-1c"
+availabilityZones: ["ZONE_A", "ZONE_B", "ZONE_C"]
+
+
 iam:
   withOIDC: true
   serviceAccounts:
@@ -35,11 +15,12 @@ iam:
         namespace: kube-system
       wellKnownPolicies:
         autoScaler: true
-      roleName: eksctl-cluster-autoscaler-role
+      roleName: CLUSTER_NAME-cluster-autoscaler-role
       roleOnly: true
     - metadata:
         name: aws-load-balancer-controller
         namespace: kube-system
+      roleName: CLUSTER_NAME-aws-lb-controller
       wellKnownPolicies:
         awsLoadBalancerController: true
 
@@ -55,9 +36,7 @@ managedNodeGroups:
     volumeSize: 50
     desiredCapacity: 1
     privateNetworking: true
-    availabilityZones: ["us-east-1a"]
-    # subnets:
-    #   - private-a
+    availabilityZones: ["ZONE_A"]
   - name: "satori-nodes-2"
     tags:
       # EC2 tags required for cluster-autoscaler auto-discovery
@@ -69,9 +48,7 @@ managedNodeGroups:
     volumeSize: 50
     desiredCapacity: 1
     privateNetworking: true
-    availabilityZones: ["us-east-1b"]
-    # subnets:
-    #   - private-b
+    availabilityZones: ["ZONE_B"]
   - name: "satori-nodes-3"
     tags:
       # EC2 tags required for cluster-autoscaler auto-discovery
@@ -83,9 +60,7 @@ managedNodeGroups:
     volumeSize: 50
     desiredCapacity: 1
     privateNetworking: true
-    availabilityZones: ["us-east-1c"]
-    # subnets:
-    #   - private-c
+    availabilityZones: ["ZONE_C"]
 
 addons:
 - name: vpc-cni 
@@ -96,3 +71,27 @@ addons:
   version: latest
 - name: kube-proxy
   version: latest
+
+vpc:
+  nat:
+    gateway: NAT_GW_CONFIG  
+  clusterEndpoints:
+    publicAccess:  true
+    privateAccess: true
+  # cidr: "10.0.0.0/16"
+ # # # # # # id: VPC_ID
+ # # # # # # subnets: 
+ # # # # # #   private:
+ # # # # # #     private-a:
+ # # # # # #       id: "PRIVATE_SUB1_ID"
+ # # # # # #     private-b:
+ # # # # # #       id: "PRIVATE_SUB2_ID"
+ # # # # # #     private-c:
+ # # # # # #       id: "PRIVATE_SUB3_ID"
+ # # # # # #   public: 
+ # # # # # #     public-a:
+ # # # # # #       id: "PUBLIC_SUB1_ID"
+ # # # # # #     public-b:
+ # # # # # #       id: "PUBLIC_SUB2_ID"
+ # # # # # #     public-c:
+ # # # # # #       id: "PUBLIC_SUB3_ID"
