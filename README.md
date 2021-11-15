@@ -6,13 +6,13 @@ AWS EKS is a managed Kubernetes solution. The creation has shifted to an open-so
 
 The script is intended to run in bash shell.
 ## Prerequisites
-kubectl: While cluster creation runs with the eksctl tool, access to the cluster and the deployment of SatoriCyber software will be done with this tool.
+`kubectl`: While cluster creation runs with the eksctl tool, access to the cluster and the deployment of SatoriCyber software will be done with this tool.
 https://kubernetes.io/docs/tasks/tools/install-kubectl/
 
-AWS-CLI: We recommended to have this tool ready to interact with AWS resources via CLI for future modification and access to the cluster.
+`AWS-CLI`: We recommended to have this tool ready to interact with AWS resources via CLI for future modification and access to the cluster.
 https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
 
-Helm v3: The helm is used to install additional operators for AWS EKS proper functionality:
+`Helm v3`: The helm is used to install additional operators for AWS EKS proper functionality:
   1. Metrics server. https://github.com/kubernetes-sigs/metrics-server
   2. AWS EKS cluster autoscaler. https://github.com/kubernetes/autoscaler
   3. AWWS EKS load balancer controller.  https://github.com/aws/eks-charts/tree/master/stable/aws-load-balancer-controller
