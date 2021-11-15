@@ -2,26 +2,26 @@
 set -e
 
 # Please fill the following paramaters
-ACCOUNT_NUMBER="105246067165"
+ACCOUNT_NUMBER="1234567890"
 EKS_VERSION="1.21"
-CLUSTER_NAME="satori-dac-poc1"
-AWS_REGION="us-east-1"
+CLUSTER_NAME="satori-dac-poc"
+AWS_REGION="zz-xxxx-2"
 
-EXISTING_VPC=false
+EXISTING_VPC=true
 
-ZONE_A="us-east-1a"
-ZONE_B="us-east-1b"
-ZONE_C="us-east-1c"
+ZONE_A="zz-xxxx-2a"
+ZONE_B="zz-xxxx-2b"
+ZONE_C="zz-xxxx-2c"
 NAT_GW_CONFIG="HighlyAvailable"  # other options: HighlyAvailable (recommended), Disable, Single 
 
 
-VPC_ID="vpc-0599b80d7b45215c3"
-PRIVATE_SUB1_ID="subnet-03182bb32e36dd69c"
-PRIVATE_SUB2_ID="subnet-0b5e55789fcdf5922"
-PRIVATE_SUB3_ID="subnet-0126c81c0891709c3"
-PUBLIC_SUB1_ID="subnet-0744841e4667d619d"
-PUBLIC_SUB2_ID="subnet-0f94ea609cde1c230"
-PUBLIC_SUB3_ID="subnet-05f4f9562f841a57d"
+VPC_ID="vpc-a1b2c3d4e5f6a1b2"
+PRIVATE_SUB1_ID="subnet-a1b2c3d4e5f6a1b2"
+PRIVATE_SUB2_ID="subnet-a1b2c3d4e5f6a1b2"
+PRIVATE_SUB3_ID="subnet-a1b2c3d4e5f6a1b2"
+PUBLIC_SUB1_ID="subnet-a1b2c3d4e5f6a1b2"
+PUBLIC_SUB2_ID="subnet-a1b2c3d4e5f6a1b2"
+PUBLIC_SUB3_ID="subnet-a1b2c3d4e5f6a1b2"
 
 
 
