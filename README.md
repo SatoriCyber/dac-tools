@@ -15,7 +15,8 @@ https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
 `Helm v3`: The helm is used to install additional operators for AWS EKS proper functionality:
   1. Metrics server. https://github.com/kubernetes-sigs/metrics-server
   2. AWS EKS cluster autoscaler. https://github.com/kubernetes/autoscaler
-  3. AWS EKS load balancer controller.  https://github.com/aws/eks-charts/tree/master/stable/aws-load-balancer-controller
+  3. AWS EKS load balancer controller.  https://github.com/aws/eks-charts/tree/master/stable/aws-load-balancer-controller  
+    
 To install the HELM , please follow these instructions: https://helm.sh/docs/intro/install/
 
 ## Minimum permissions required for running this tool
