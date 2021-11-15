@@ -3,23 +3,23 @@ set -e
 # Please fill the following paramaters
 ACCOUNT_NUMBER="105246067165"
 EKS_VERSION="1.21"
-CLUSTER_NAME="satori-dac-poc2"
+CLUSTER_NAME="satori-dac-poc1"
 
 
-AWS_REGION="us-east-1"
+AWS_REGION="xy-east-1"
 ZONE_A="us-east-1a"
 ZONE_B="us-east-1b"
 ZONE_C="us-east-1c"
-NAT_GW_CONFIG="Single"  # other options: HighlyAvailable (recommended), Disable, Single 
+NAT_GW_CONFIG="HighlyAvailable"  # other options: HighlyAvailable (recommended), Disable, Single 
 
-EXISTING_VPC=true
-VPC_ID="vpc-04ce41b172522770e"
-PRIVATE_SUB1_ID="subnet-0409cf42d68b62649"
-PRIVATE_SUB2_ID="subnet-097b9d90f3f0a182e"
-PRIVATE_SUB3_ID="subnet-0a2a93569abc65f06"
-PUBLIC_SUB1_ID="subnet-0a2a93569abc65f06"
-PUBLIC_SUB2_ID="subnet-013f8a0e07c6f9db0"
-PUBLIC_SUB3_ID="subnet-02380d22f1b2fd1a9"
+EXISTING_VPC=false
+VPC_ID="vpc-007423d44fc7972cb"
+PRIVATE_SUB1_ID="subnet-0f1c4f9115089b73b"
+PRIVATE_SUB2_ID="subnet-003dda55a265c52aa"
+PRIVATE_SUB3_ID="subnet-0fa4f66bc62aaaa34"
+PUBLIC_SUB1_ID="subnet-07c1a011d189e04d3"
+PUBLIC_SUB2_ID="subnet-077ada06e21814988"
+PUBLIC_SUB3_ID="subnet-076b04571e5a992c5"
 
 
 echo "Creating an AWS DAC with eksctl"
