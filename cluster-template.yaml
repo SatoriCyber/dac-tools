@@ -37,6 +37,9 @@ managedNodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ZONE_A"]
+    subnets:
+      - private-subnet-a
+
   - name: "satori-nodes-2"
     tags:
       # EC2 tags required for cluster-autoscaler auto-discovery
@@ -49,6 +52,8 @@ managedNodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ZONE_B"]
+    subnets:
+      - private-subnet-b
   - name: "satori-nodes-3"
     tags:
       # EC2 tags required for cluster-autoscaler auto-discovery
@@ -61,6 +66,8 @@ managedNodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ZONE_C"]
+    subnets:
+      - private-subnet-c
 
 addons:
 - name: vpc-cni 
@@ -78,20 +85,20 @@ vpc:
   clusterEndpoints:
     publicAccess:  true
     privateAccess: true
-  # cidr: "10.0.0.0/16"
+   # cidr: "10.0.0.0/16"
  # # # # # # id: VPC_ID
  # # # # # # subnets: 
  # # # # # #   private:
- # # # # # #     private-a:
+ # # # # # #     private-subnet-a:
  # # # # # #       id: "PRIVATE_SUB1_ID"
- # # # # # #     private-b:
+ # # # # # #     private-subnet-b:
  # # # # # #       id: "PRIVATE_SUB2_ID"
- # # # # # #     private-c:
+ # # # # # #     private-subnet-c:
  # # # # # #       id: "PRIVATE_SUB3_ID"
  # # # # # #   public: 
- # # # # # #     public-a:
+ # # # # # #     public-subnet-a:
  # # # # # #       id: "PUBLIC_SUB1_ID"
- # # # # # #     public-b:
+ # # # # # #     public-subnet-b:
  # # # # # #       id: "PUBLIC_SUB2_ID"
- # # # # # #     public-c:
+ # # # # # #     public-subnet-c:
  # # # # # #       id: "PUBLIC_SUB3_ID"

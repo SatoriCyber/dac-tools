@@ -1,26 +1,72 @@
 #!/bin/bash
 set -e
+
 # Please fill the following paramaters
-ACCOUNT_NUMBER="105246067165"
+ACCOUNT_NUMBER="1234567890"
 EKS_VERSION="1.21"
-CLUSTER_NAME="satori-dac-poc1"
+CLUSTER_NAME="satori-dac-poc"
 
 
-AWS_REGION="xy-east-1"
-ZONE_A="us-east-1a"
-ZONE_B="us-east-1b"
-ZONE_C="us-east-1c"
+AWS_REGION="us-xxxx-y"
+ZONE_A="us-xxxx-ya"
+ZONE_B="us-xxxx-yb"
+ZONE_C="us-xxxx-yc"
+
+EXISTING_VPC=true
+
+
+VPC_ID="vpc-0a1b2c4d5e6f1a2b4c"
+
 NAT_GW_CONFIG="HighlyAvailable"  # other options: HighlyAvailable (recommended), Disable, Single 
 
-EXISTING_VPC=false
-VPC_ID="vpc-007423d44fc7972cb"
-PRIVATE_SUB1_ID="subnet-0f1c4f9115089b73b"
-PRIVATE_SUB2_ID="subnet-003dda55a265c52aa"
-PRIVATE_SUB3_ID="subnet-0fa4f66bc62aaaa34"
-PUBLIC_SUB1_ID="subnet-07c1a011d189e04d3"
-PUBLIC_SUB2_ID="subnet-077ada06e21814988"
-PUBLIC_SUB3_ID="subnet-076b04571e5a992c5"
 
+PRIVATE_SUB1_ID="subnet-0a1b2c4d5e6f1a2b4c"
+PRIVATE_SUB2_ID="subnet-0a1b2c4d5e6f1a2b4c"
+PRIVATE_SUB3_ID="subnet-0a1b2c4d5e6f1a2b4c"
+PUBLIC_SUB1_ID="subnet-0a1b2c4d5e6f1a2b4c"
+PUBLIC_SUB2_ID="subnet-0a1b2c4d5e6f1a2b4c"
+PUBLIC_SUB3_ID="subnet-0a1b2c4d5e6f1a2b4c"
+
+
+
+
+
+
+
+
+
+
+
+
+
+if ! command -v aws &> /dev/null
+then
+    echo "The aws cli is required by isn't isntalled"
+    echo "Please refer to about aws cli https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html"
+    exit 1
+fi
+
+if ! command -v kubectl &> /dev/null
+then
+    echo "The kubectl is required by isn't isntalled"
+    echo "Please refer to about kubectl https://kubernetes.io/docs/tasks/tools/install-kubectl/"
+    exit 1
+fi
+if ! command -v helm &> /dev/null
+then
+    echo "The helm is required by isn't isntalled"
+    echo "Please refer to about helm https://helm.sh/docs/intro/install/"
+    exit 1
+fi
+
+connected_account=$(aws sts get-caller-identity --query Account | tr -d '"')
+
+if [ "$ACCOUNT_NUMBER" != "$connected_account" ] ; then
+   echo "Your cuurent credentials are diifrent from configured AWS account number. For your protection the script will not run. Please, check your current AWS credentials"
+   echo -e "Connected account: $connected_account"
+   echo -e "Configured account: $ACCOUNT_NUMBER"
+   exit 1
+fi
 
 echo "Creating an AWS DAC with eksctl"
 # get eksctl.tar.gz
