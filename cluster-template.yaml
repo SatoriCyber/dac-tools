@@ -54,6 +54,7 @@ managedNodeGroups:
     availabilityZones: ["ZONE_B"]
     subnets:
       - private-subnet-b
+      
   - name: "satori-nodes-3"
     tags:
       # EC2 tags required for cluster-autoscaler auto-discovery

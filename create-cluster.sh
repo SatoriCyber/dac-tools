@@ -2,30 +2,26 @@
 set -e
 
 # Please fill the following paramaters
-ACCOUNT_NUMBER="1234567890"
+ACCOUNT_NUMBER="105246067165"
 EKS_VERSION="1.21"
-CLUSTER_NAME="satori-dac-poc"
+CLUSTER_NAME="satori-dac-poc1"
+AWS_REGION="us-east-1"
 
+EXISTING_VPC=false
 
-AWS_REGION="us-xxxx-y"
-ZONE_A="us-xxxx-ya"
-ZONE_B="us-xxxx-yb"
-ZONE_C="us-xxxx-yc"
-
-EXISTING_VPC=true
-
-
-VPC_ID="vpc-0a1b2c4d5e6f1a2b4c"
-
+ZONE_A="us-east-1a"
+ZONE_B="us-east-1b"
+ZONE_C="us-east-1c"
 NAT_GW_CONFIG="HighlyAvailable"  # other options: HighlyAvailable (recommended), Disable, Single 
 
 
-PRIVATE_SUB1_ID="subnet-0a1b2c4d5e6f1a2b4c"
-PRIVATE_SUB2_ID="subnet-0a1b2c4d5e6f1a2b4c"
-PRIVATE_SUB3_ID="subnet-0a1b2c4d5e6f1a2b4c"
-PUBLIC_SUB1_ID="subnet-0a1b2c4d5e6f1a2b4c"
-PUBLIC_SUB2_ID="subnet-0a1b2c4d5e6f1a2b4c"
-PUBLIC_SUB3_ID="subnet-0a1b2c4d5e6f1a2b4c"
+VPC_ID="vpc-0599b80d7b45215c3"
+PRIVATE_SUB1_ID="subnet-03182bb32e36dd69c"
+PRIVATE_SUB2_ID="subnet-0b5e55789fcdf5922"
+PRIVATE_SUB3_ID="subnet-0126c81c0891709c3"
+PUBLIC_SUB1_ID="subnet-0744841e4667d619d"
+PUBLIC_SUB2_ID="subnet-0f94ea609cde1c230"
+PUBLIC_SUB3_ID="subnet-05f4f9562f841a57d"
 
 
 
@@ -81,8 +77,10 @@ tar zxfv eksctl.tar.gz
 # create the cluster yaml
 sed "s/NAT_GW_CONFIG/${NAT_GW_CONFIG}/g;s/EKS_VERSION/${EKS_VERSION}/g;s/AWS_REGION/${AWS_REGION}/g;s/ACCOUNT_NUMBER/${ACCOUNT_NUMBER}/g;s/CLUSTER_NAME/${CLUSTER_NAME}/g;s/PRIVATE_SUB1_ID/${PRIVATE_SUB1_ID}/g;s/PRIVATE_SUB2_ID/${PRIVATE_SUB2_ID}/g;s/PRIVATE_SUB3_ID/${PRIVATE_SUB3_ID}/g;s/PUBLIC_SUB1_ID/${PUBLIC_SUB1_ID}/g;s/PUBLIC_SUB2_ID/${PUBLIC_SUB2_ID}/g;s/PUBLIC_SUB3_ID/${PUBLIC_SUB3_ID}/g;s/VPC_ID/${VPC_ID}/g;s/EKS_ROLE/${EKS_ROLE}/g" cluster-template.yaml > ${AWS_REGION}-${CLUSTER_NAME}.yaml
 if [ "$EXISTING_VPC" == true ] ; then
-   sed '/availabilityZones.*,.*/d' ${AWS_REGION}-${CLUSTER_NAME}.yaml > tmpfile ; mv tmpfile ${AWS_REGION}-${CLUSTER_NAME}.yaml
+   sed '/availabilityZones/d' ${AWS_REGION}-${CLUSTER_NAME}.yaml > tmpfile ; mv tmpfile ${AWS_REGION}-${CLUSTER_NAME}.yaml
    sed  "s/# # # # # #//g" ${AWS_REGION}-${CLUSTER_NAME}.yaml > tmpfile ; mv tmpfile ${AWS_REGION}-${CLUSTER_NAME}.yaml
+else
+   sed '/subnet/d' ${AWS_REGION}-${CLUSTER_NAME}.yaml > tmpfile ; mv tmpfile ${AWS_REGION}-${CLUSTER_NAME}.yaml
 fi
 sed "s/ZONE_A/${ZONE_A}/g;s/ZONE_B/${ZONE_B}/g;s/ZONE_C/${ZONE_C}/g" ${AWS_REGION}-${CLUSTER_NAME}.yaml > tmpfile ; mv tmpfile ${AWS_REGION}-${CLUSTER_NAME}.yaml
 
