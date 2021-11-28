@@ -82,15 +82,12 @@ When the `EXISTING_VPC` equals false all following VPC settings are ignored:
 ## Caveats:  
   
 1. Before running the tool with EXISTING_VPC=false (New dedicated VPC will be created), make sure you don't exceed the quota. Special attention should be paid to:  
+  "EC2-VPC Elastic IPs per region (default quota is 5)": https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-0263D0A3  
+  "VPCs per Region (default quota is 5)": https://console.aws.amazon.com/servicequotas/home/services/vpc/quotas/L-F678F1CE  
+  "NAT gateways per Availability Zone (default quota is 5)": https://console.aws.amazon.com/servicequotas/home/services/vpc/quotas/L-FE5A380F  
+  "Internet gateways per Region (default quota is 5)":  https://console.aws.amazon.com/servicequotas/home/services/vpc/quotas/L-A4707A72  
   
-"EC2-VPC Elastic IPs per region (default quota is 5)": https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-0263D0A3  
-"VPCs per Region (default quota is 5)": https://console.aws.amazon.com/servicequotas/home/services/vpc/quotas/L-F678F1CE  
-"NAT gateways per Availability Zone (default quota is 5)": https://console.aws.amazon.com/servicequotas/home/services/vpc/quotas/L-FE5A380F  
-"Internet gateways per Region (default quota is 5)":  https://console.aws.amazon.com/servicequotas/home/services/vpc/quotas/L-A4707A72  
-  
-If you exceeded your quota or almost exceeded, increase it before running the tool.  
-  
-  
+  If you exceeded your quota or almost exceeded, increase it before running the tool.  
   
 2. Before running the tool with EXISTING_VPC=true (Using an existing VPC), make sure the subnets are large enough and have enough free addresses. Special attention should be paid to private subnets where the nodes will be located, since a typical EC2 node reserves about 60 IP addresses, therefore make sure you have a few hundreds of available addresses.  The thumb rule says that you should have about at least 400 available addresses in every subnet to ensure the satori cluster will be functional in case of scaling or other availability zone outage.  
   
