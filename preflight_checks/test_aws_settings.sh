@@ -127,6 +127,25 @@ else
   errorsReport="$errorsReport \n$message"
 fi
 
+echo -e ${WHITE}
+echo "Checking node image..."
+image=$(kubectl get node -o  jsonpath='{$.items[0].metadata.labels.eks\.amazonaws\.com/nodegroup-image}')
+if [  "$image" != "" ]; then
+   echo -e "The image ID is: $image"
+   imageOwner=$(aws ec2  describe-images --image-ids $image --region $awsRegion --query 'Images[0].ImageOwnerAlias' | tr -d '"')
+   imageLocation=$(aws ec2  describe-images --image-ids $image --region $awsRegion --query 'Images[0].ImageLocation' | tr -d '"')
+   echo -e "The image owner is: $imageOwner"
+   echo -e "The image location is: $imageLocation" 
+fi
+if [[  "$imageOwner" == "amazon" ]] && [[ "$imageLocation" =~ .*"amazon-eks-node".* ]]; then
+    echo -e "${GREEN}The nodes are using an official amazon kubernetes image."
+else
+    message="${RED}The nodes are using NON official amazon kubernetes image. This is the informational message.Custom images might work stable if built properly."
+    echo -e $message
+    errorsReport="$errorsReport \n$message"
+fi
+
+
 
 
 
