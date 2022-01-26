@@ -46,7 +46,7 @@ You must provide 3 availability zones where the cluster nodes groups will be cre
 The NAT Gateway configuration. For production clusters we strongly recommend setting the value to "HighlyAvailable". therefore the eksctrl will create the separated NAT gateway in every availability zone.  
 `NAT_GW_CONFIG` # Possible options: HighlyAvailable (recommended), Disable, Single  
   
-When the `EXISTING_VPC` equals true all following VPC settings are ignored:  
+When the `EXISTING_VPC` equals `false` all following VPC settings are ignored:  
 `VPC_ID`  
 `PRIVATE_SUB1_ID`  
 `PRIVATE_SUB2_ID`  
@@ -55,7 +55,7 @@ When the `EXISTING_VPC` equals true all following VPC settings are ignored:
 `PUBLIC_SUB2_ID`  
 `PUBLIC_SUB3_ID`  
 
-If the value of `EXISTING_VPC` is true, you must provide existing VPC information.  
+If the value of `EXISTING_VPC` is `true`, you must provide existing VPC information.  
   
 `VPC_ID`: The existing VPC ID, for example "vpc-0a1b2c4d5e6f1a2b4c"  
   
