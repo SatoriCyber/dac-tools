@@ -81,39 +81,45 @@ azs=("us-east-1c")
 for i in "${nodeGroups[@]}" 
 do
     echo -e "${WHITE}Checking subnets for node group $i..."
-    subnet=$(aws eks describe-nodegroup --nodegroup-name $i --cluster-name $clusterName --region $awsRegion --output text --query 'nodegroup.subnets')
-    echo -e "The node group $i has  the subnet $subnet"
-    echo -e "Checking subnet $subnet"
-    az=$(aws ec2 describe-subnets --subnet-ids $subnet --region $awsRegion --output text --query 'Subnets[*].AvailabilityZone')
-    freeAddresses=$(aws ec2 describe-subnets --subnet-ids $subnet --region $awsRegion --output text --query 'Subnets[*].AvailableIpAddressCount')
-    if [  "$freeAddresses" -ge 300 ]; then
-        echo -e "${GREEN}The subnet $subnet has $freeAddresses free IP address. It's good enough"
-    else
-        message="${RED}The subnet $subnet has only $freeAddresses free IP address. For redundancy and fault tolerance we recommend to keep at least 300 free IP addresses"
-        echo -e $message
-        errorsReport="$errorsReport \n$message"
-    fi
-
-    echo -e "${WHITE}The subnet $subnet is located in availability zone $az"
-    azs+=($az)
-    echo -e "${WHITE}Checking tags for subnet $subnet..."
-    internlElbTag=$(aws ec2 describe-subnets --subnet-ids $subnet --region $awsRegion --output text  --query 'Subnets[*].Tags[?Key==`kubernetes.io/role/internal-elb`].Value[]')
-    if [  "$internlElbTag" -eq 1 ]; then
-        echo -e "${GREEN}The 'kubernetes.io/role/internal-elb' tag with value 1 has been found on subnet $subnet"
-    else
-        message="${RED}The 'kubernetes.io/role/internal-elb' tag with value 1 hasn't been found on subnet $subnet"
-        echo -e $message
-        errorsReport="$errorsReport \n$message"
-    fi
-    clusterTag=$(aws ec2 describe-subnets --subnet-ids $subnet --region $awsRegion --output text  --query 'Subnets[*].Tags[?Key==`kubernetes.io/cluster/'$clusterName'`].Value[]')
-
-    if [  "$clusterTag" == "owned" ] || [ "$clusterTag" == "shared" ]; then
-        echo -e "${GREEN}The 'kubernetes.io/cluster/${clusterName}' tag with value 'shared' or 'owned' has been found on subnet $subnet"
-    else
-        message="${RED}The 'kubernetes.io/cluster/${clusterName}' tag with value 'shared' or 'owned' hasn't been found on subnet $subnet"
-        echo -e $message
-        errorsReport="$errorsReport \n$message"
-    fi
+    subnets=$(aws eks describe-nodegroup --nodegroup-name $i --cluster-name $clusterName --region $awsRegion --output text --query 'nodegroup.subnets[*]')
+    subnets=(`echo $subnets | tr ' ' ' '`)
+    echo -e "The node group $i has  the subnets: $subnets"
+    for subnet in "${subnets[@]}" 
+    do
+          
+          echo -e "Checking subnet $subnet"
+          az=$(aws ec2 describe-subnets --subnet-ids $subnet --region $awsRegion --output text --query 'Subnets[*].AvailabilityZone')
+          freeAddresses=$(aws ec2 describe-subnets --subnet-ids $subnet --region $awsRegion --output text --query 'Subnets[*].AvailableIpAddressCount')
+          if [  "$freeAddresses" -ge 300 ]; then
+              echo -e "${GREEN}The subnet $subnet has $freeAddresses free IP address. It's good enough"
+          else
+              message="${RED}The subnet $subnet has only $freeAddresses free IP address. For redundancy and fault tolerance we recommend to keep at least 300 free IP addresses"
+              echo -e $message
+              errorsReport="$errorsReport \n$message"
+          fi
+      
+          echo -e "${WHITE}The subnet $subnet is located in availability zone $az"
+          azs+=($az)
+          echo -e "${WHITE}Checking tags for subnet $subnet..."
+          internlElbTag=$(aws ec2 describe-subnets --subnet-ids $subnet --region $awsRegion --output text  --query 'Subnets[*].Tags[?Key==`kubernetes.io/role/internal-elb`].Value[]')
+          if [  "$internlElbTag" -eq 1 ]; then
+              echo -e "${GREEN}The 'kubernetes.io/role/internal-elb' tag with value 1 has been found on subnet $subnet"
+          else
+              message="${RED}The 'kubernetes.io/role/internal-elb' tag with value 1 hasn't been found on subnet $subnet"
+              echo -e $message
+              errorsReport="$errorsReport \n$message"
+          fi
+          clusterTag=$(aws ec2 describe-subnets --subnet-ids $subnet --region $awsRegion --output text  --query 'Subnets[*].Tags[?Key==`kubernetes.io/cluster/'$clusterName'`].Value[]')
+      
+          if [  "$clusterTag" == "owned" ] || [ "$clusterTag" == "shared" ]; then
+              echo -e "${GREEN}The 'kubernetes.io/cluster/${clusterName}' tag with value 'shared' or 'owned' has been found on subnet $subnet"
+          else
+              message="${RED}The 'kubernetes.io/cluster/${clusterName}' tag with value 'shared' or 'owned' hasn't been found on subnet $subnet"
+              echo -e $message
+              errorsReport="$errorsReport \n$message"
+          fi
+    done
+    
 done
 
 uniqAzs=($(printf "%s\n" "${azs[@]}" | sort -u | tr '\n' ' '))
