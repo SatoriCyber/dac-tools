@@ -1,10 +1,10 @@
 
    
 # test_kubernetes.sh  
-## This script is intended to verify the following EKS prerequisites for running the satori product:  
-The EKS cluster version.   
+## This script is intended to verify the following Kubernetes prerequisites for running the satori product:  
+The Kubernetes cluster version.   
 The existence of default storage class.  
-The number of eks nodes.  
+The number of Kubernetes nodes.  
 The amount of allocatable memory in each node.  
 The number of CPU in each node.  
 The amount of available ephemeral storage in each node.  
