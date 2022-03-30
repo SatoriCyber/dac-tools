@@ -15,12 +15,12 @@ iam:
         namespace: kube-system
       wellKnownPolicies:
         autoScaler: true
-      roleName: CLUSTER_NAME-cluster-autoscaler-role
+      roleName: cluster-autoscaler-role-CLUSTER_NAME
       roleOnly: true
     - metadata:
         name: aws-load-balancer-controller
         namespace: kube-system
-      roleName: CLUSTER_NAME-aws-lb-controller
+      roleName: aws-lb-controller-CLUSTER_NAME
       wellKnownPolicies:
         awsLoadBalancerController: true
 
@@ -30,7 +30,7 @@ managedNodeGroups:
       # EC2 tags required for cluster-autoscaler auto-discovery
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/CLUSTER_NAME: "owned"
-    instanceType: m5.large 
+    instanceType: m6i.large 
     minSize: 1
     maxSize: 5
     volumeSize: 50
@@ -45,7 +45,7 @@ managedNodeGroups:
       # EC2 tags required for cluster-autoscaler auto-discovery
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/CLUSTER_NAME: "owned"
-    instanceType: m5.large 
+    instanceType: m6i.large 
     minSize: 1
     maxSize: 5
     volumeSize: 50
@@ -60,7 +60,7 @@ managedNodeGroups:
       # EC2 tags required for cluster-autoscaler auto-discovery
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/CLUSTER_NAME: "owned"
-    instanceType: m5.large 
+    instanceType: m6i.large 
     minSize: 1
     maxSize: 5
     volumeSize: 50
