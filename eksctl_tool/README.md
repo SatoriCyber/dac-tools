@@ -20,7 +20,8 @@ https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
 To install the HELM , please follow these instructions: https://helm.sh/docs/intro/install/
 
 ## Minimum permissions required for running this tool
-   The minimum IAM policies required to run this tools are described here: https://eksctl.io/usage/minimum-iam-policies/
+  If you use `EXISTING_VPC=true` the minimum IAM policies required to run are [here](./aws_required_policies/iam_eks_policy.json) and [here](./aws_required_policies/limited_ec2_policy.json)
+  If you use `EXISTING_VPC=false` you need full ec2 permissions, therefore the minimum IAM policies required to run are [here](./aws_required_policies/iam_eks_policy.json) and [here](./aws_required_policies/full_ec2_policy.json)
 
 ## Values and configuration
 
@@ -70,7 +71,11 @@ Three public subnets:
 `PUBLIC_SUB3_ID`  
   
 We highly recommend providing subnets in three different availability zones.  
-  
+If you use an existing VPC, you MUST (!!!) tag subnets allow the EKS to create load balancers correctly, othwerwise load balancers might stuck in  the pending state:
+
+Set tag `kubernetes.io/cluster/<name>` to either shared
+Set tag `kubernetes.io/role/internal-elb` to 1 for private subnets
+Set tag `kubernetes.io/role/elb` to 1 for public subnets
   
 When the `EXISTING_VPC` equals false all following VPC settings are ignored:  
 `EXISTING_VPC`  

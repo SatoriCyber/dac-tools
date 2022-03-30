@@ -1,0 +1,98 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "eks:DescribeFargateProfile",
+                "eks:ListTagsForResource",
+                "eks:ListAddons",
+                "eks:DescribeAddon",
+                "eks:DescribeNodegroup",
+                "eks:AssociateEncryptionConfig",
+                "eks:ListUpdates",
+                "kms:DescribeKey",
+                "eks:DescribeAddonVersions",
+                "eks:ListIdentityProviderConfigs",
+                "kms:CreateGrant",
+                "eks:CreateCluster",
+                "eks:ListNodegroups",
+                "eks:UntagResource",
+                "cloudformation:*",
+                "eks:CreateNodegroup",
+                "eks:RegisterCluster",
+                "eks:ListFargateProfiles",
+                "eks:DescribeIdentityProviderConfig",
+                "eks:DescribeUpdate",
+                "eks:TagResource",
+                "eks:AccessKubernetesApi",
+                "eks:CreateAddon",
+                "eks:DescribeCluster",
+                "eks:ListClusters",
+                "eks:AssociateIdentityProviderConfig"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": "iam:CreateServiceLinkedRole",
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "iam:AWSServiceName": [
+                        "eks.amazonaws.com",
+                        "eks-nodegroup.amazonaws.com",
+                        "autoscaling.amazonaws.com",
+                        "ec2scheduled.amazonaws.com",
+                        "elasticloadbalancing.amazonaws.com"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "VisualEditor2",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateInstanceProfile",
+                "iam:DeleteInstanceProfile",
+                "iam:GetRole",
+                "iam:GetInstanceProfile",
+                "iam:TagRole",
+                "iam:RemoveRoleFromInstanceProfile",
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:AttachRolePolicy",
+                "iam:PutRolePolicy",
+                "iam:ListInstanceProfiles",
+                "iam:AddRoleToInstanceProfile",
+                "iam:CreateOpenIDConnectProvider",
+                "iam:ListInstanceProfilesForRole",
+                "iam:PassRole",
+                "iam:DetachRolePolicy",
+                "iam:ListAttachedRolePolicies",
+                "iam:DeleteRolePolicy",
+                "iam:GetOpenIDConnectProvider",
+                "iam:DeleteOpenIDConnectProvider",
+                "iam:TagOpenIDConnectProvider",
+                "iam:GetRolePolicy"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:instance-profile/eksctl-*",
+                "arn:aws:iam::*:oidc-provider/*",
+                "arn:aws:iam::*:role/eksctl-*",
+                "arn:aws:iam::*:role/cluster-autoscaler-role-*",
+                "arn:aws:iam::*:role/aws-lb-controller-*",
+                "arn:aws:iam::*:role/aws-service-role/eks-nodegroup.amazonaws.com/AWSServiceRoleForAmazonEKSNodegroup",
+                "arn:aws:iam::*:role/eksctl-managed-*"
+            ]
+        },
+        {
+            "Sid": "VisualEditor3",
+            "Effect": "Allow",
+            "Action": "iam:GetRole",
+            "Resource": "arn:aws:iam::*:role/*"
+        }
+    ]
+}
