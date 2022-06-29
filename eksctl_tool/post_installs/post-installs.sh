@@ -17,7 +17,7 @@ echo "Installing node autoscaler"
 helm repo add autoscaler https://kubernetes.github.io/autoscaler
 helm repo update 
 pushd ./node-autoscaler
-helm upgrade -i -n kube-system cluster-autoscaler --values satori_values.yaml --set 'autoDiscovery.clusterName'=$CLUSTER_NAME --set 'awsRegion'=$AWS_REGION --set rbac.serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=arn:aws:iam::${ACCOUNT_NUMBER}:role/${CLUSTER_NAME}-cluster-autoscaler-role --debug  autoscaler/cluster-autoscaler 
+helm upgrade -i -n kube-system cluster-autoscaler --values satori_values.yaml --set 'autoDiscovery.clusterName'=$CLUSTER_NAME --set 'awsRegion'=$AWS_REGION --set rbac.serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=arn:aws:iam::${ACCOUNT_NUMBER}:role/cluster-autoscaler-role-${CLUSTER_NAME} --debug  autoscaler/cluster-autoscaler 
 popd 
 
 echo "Installing eks alb controller"
