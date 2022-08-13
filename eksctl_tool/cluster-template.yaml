@@ -37,6 +37,7 @@ managedNodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ZONE_A"]
+    propagateASGTags: true
     subnets:
       - private-subnet-a
 
@@ -52,6 +53,7 @@ managedNodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ZONE_B"]
+    propagateASGTags: true
     subnets:
       - private-subnet-b
       
@@ -67,6 +69,7 @@ managedNodeGroups:
     desiredCapacity: 1
     privateNetworking: true
     availabilityZones: ["ZONE_C"]
+    propagateASGTags: true
     subnets:
       - private-subnet-c
 
@@ -75,6 +78,10 @@ addons:
   version: latest
   attachPolicyARNs:
     - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+- name: aws-ebs-csi-driver
+  version: latest
+  attachPolicyARNs:
+    - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
 - name: coredns
   version: latest
 - name: kube-proxy
