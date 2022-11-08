@@ -46,6 +46,20 @@ fi
 result=""
 
 echo -e ${WHITE}
+echo "Checking AWS CSI Driver..."
+result=$(kubectl get pod -A -l app.kubernetes.io/name=aws-ebs-csi-driver --field-selector status.phase=Running)
+    echo -e "$result"
+if [  "$result" != "" ]; then
+    echo -e "${GREEN}The AWS CSI Driver has been found  and seems to be working."
+else
+    message="${RED}The AWS CSI Driver hasn't been found  or isn't working"
+    echo -e $message
+    errorsReport="$errorsReport \n$message"
+fi
+result=""
+
+
+echo -e ${WHITE}
 echo "Checking AWS cluster autoscaller .."
 result=$(kubectl get pod -A -l app.kubernetes.io/name=aws-cluster-autoscaler --field-selector status.phase=Running)
 echo -e "$result"
@@ -146,7 +160,7 @@ fi
 if [[  "$imageOwner" == "amazon" ]] && [[ "$imageLocation" =~ .*"amazon-eks-node".* ]]; then
     echo -e "${GREEN}The nodes are using an official amazon kubernetes image."
 else
-    message="${RED}The nodes are using NON official amazon kubernetes image. This is the informational message.Custom images might work stable if built properly."
+    message="${RED}The nodes are using NON official amazon kubernetes image. This is the informational message. Custom images might work stable if built properly."
     echo -e $message
     errorsReport="$errorsReport \n$message"
 fi
