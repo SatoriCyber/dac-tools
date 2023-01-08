@@ -16,7 +16,7 @@ spec:
               message: Your cluster meets the minimum version of Kubernetes, but we recommend you update to 1.24 or later.
               uri: https://kubernetes.io
           - pass:
-              when: "=> 1.24.0"
+              when: "> 1.24.0 || = 1.24.0"
               message: Your cluster meets the recommended and required versions of Kubernetes.
     - storageClass:
         checkName: Check for default storage class
