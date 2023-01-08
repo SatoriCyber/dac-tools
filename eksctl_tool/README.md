@@ -30,7 +30,7 @@ The variables appear in the upper side of the `create-cluster.sh`.
 
 `ACCOUNT_NUMBER`: The AWS account number is used for the cluster creation and permissions distribution.
 example - `123456789012`  
-`EKS_VERSION`: The EKS version. For example 1.21"  
+`EKS_VERSION`: The EKS version. For example 1.24"  
 `CLUSTER_NAME`: The EKS custer name for example "satori-dac-poc"  
 `AWS_REGION`: The AWS region, example - `us-east-1`  
   
