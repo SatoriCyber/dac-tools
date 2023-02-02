@@ -14,10 +14,21 @@ helm upgrade -i metrics-server -n kube-system --debug metrics-server/metrics-ser
 
 
 echo "Installing node autoscaler"
+
+if [[ "$AWS_REGION" == "us-gov"* ]]; then
+   echo "This is gov cloud"
+   ARN_STRING="aws-us-gov"
+else
+   echo "This is non gov cloud"
+   ARN_STRING="aws"
+fi
+
+
+
 helm repo add autoscaler https://kubernetes.github.io/autoscaler
 helm repo update 
 pushd ./node-autoscaler
-helm upgrade -i -n kube-system cluster-autoscaler --values satori_values.yaml --set 'autoDiscovery.clusterName'=$CLUSTER_NAME --set 'awsRegion'=$AWS_REGION --set rbac.serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=arn:aws:iam::${ACCOUNT_NUMBER}:role/cluster-autoscaler-role-${CLUSTER_NAME} --debug  autoscaler/cluster-autoscaler 
+helm upgrade -i -n kube-system cluster-autoscaler --values satori_values.yaml --set 'autoDiscovery.clusterName'=$CLUSTER_NAME --set 'awsRegion'=$AWS_REGION --set rbac.serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=arn:${ARN_STRING}:iam::${ACCOUNT_NUMBER}:role/cluster-autoscaler-role-${CLUSTER_NAME} --debug  autoscaler/cluster-autoscaler 
 popd 
 
 echo "Installing eks alb controller"
