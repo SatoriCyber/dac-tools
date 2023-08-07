@@ -23,6 +23,7 @@ curl -s -H "Authorization: Bearer ${satori_bearer}" -X GET "https://app.satoricy
 mkdir -p "${tmp_dir}/${satori_latest_version}-extracted" && tar -xvf "${tmp_dir}/${satori_latest_version}.tar" -C "${tmp_dir}/${satori_latest_version}-extracted/" --strip-components 1
 
 # Upload the bootstrap access key to the kubernetes secret
+# Note: this step can varybased on your environment, e.g. push the secret into vault and deploy into the cluster via alternative means
 cd "${tmp_dir}/${satori_latest_version}-extracted/"
 kubectl create namespace satori-runtime --save-config --dry-run=client -o yaml | kubectl apply -f -
 kubectl create secret generic dac-secrets-sa -n satori-runtime --save-config --dry-run=client --from-file="./dac-secrets-sa.json" -o yaml | kubectl apply -f -
