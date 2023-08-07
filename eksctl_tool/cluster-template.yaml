@@ -23,6 +23,16 @@ iam:
       roleName: aws-lb-controller-CLUSTER_NAME
       wellKnownPolicies:
         awsLoadBalancerController: true
+    - metadata:
+        name: CLUSTER_NAME-role
+        namespace: satori-runtime
+      roleName: CLUSTER_NAME-role
+      attachPolicy:
+        Statement:
+        - Effect: Allow
+          Action:
+          - sts:AssumeRole
+          Resource: 'arn:aws:iam::*:role/CLUSTER_NAME-service-role'
 
 managedNodeGroups:
   - name: "satori-nodes-1"

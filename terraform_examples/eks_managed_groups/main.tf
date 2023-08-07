@@ -180,3 +180,54 @@ module "vpc_csi_ebs_irsa" {
 }
 
 
+
+data "aws_iam_policy_document" "dac_role_assume_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    principals {
+      type        = "Federated"
+      identifiers = [module.eks.oidc_provider_arn]
+    }
+    condition {
+      test     = "StringLike"
+      variable = "${replace(module.eks.oidc_provider_arn, "/^(.*provider/)/", "")}:sub"
+      values   = ["system:serviceaccount:satori-runtime:*"]
+    }
+  }
+}
+
+resource "aws_iam_policy" "assume_dac_service_role_policy" {
+  name        = "${local.eks_name}-AssumeDACServiceRole"
+  path        = "/"
+  description = "AssumeCrossAccountRoles"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "sts:AssumeRole"
+      ],
+      "Resource": [
+        "arn:aws:iam::*:role/${local.eks_name}-service-role"
+      ]
+    }
+  ]
+}
+EOF
+}
+
+
+
+resource "aws_iam_role" "dac_role" {
+  name                 =  "${local.eks_name}-role"
+  path                 = "/"
+  assume_role_policy   = data.aws_iam_policy_document.dac_role_assume_policy.json
+  managed_policy_arns  = [aws_iam_policy.assume_dac_service_role_policy.arn]
+  description          = "Role used by Satori DAC to call cloud APIs"
+
+  tags = local.tags
+}

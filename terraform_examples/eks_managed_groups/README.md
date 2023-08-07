@@ -2,6 +2,7 @@
 
 This terraform example is intended to create a basic production-ready EKS cluster which can be used for Satori DAC.  
 The Terraform code creates the EKS cluster with three managed node groups in an existing VPC and subnets. The CNI plugin, ELB controller, cluster autoscaller and metrics server are installed as well.  
+The example creates the IAM role for DAC for AWS integration feature.  
 
 
 ## Prerequisites  
