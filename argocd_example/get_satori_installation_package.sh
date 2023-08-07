@@ -8,7 +8,7 @@ fi
 
 tmp_dir=$(mktemp -d)
 echo "The temp dir is: $tmp_dir"
-echo "Th git repo path is: $REPO_PATH"
+echo "The git repo path is: $REPO_PATH"
 
 # Obtain the authentication bearer
 export satori_bearer=$(curl -s -X POST -H 'Content-Type: application/json'  https://app.satoricyber.info/api/authentication/token -d '{ "serviceAccountId": "'$SATORI_SERVICE_ID'", "serviceAccountKey": "'$SATORI_SERVICE_KEY'"}' | jq -r .token)
