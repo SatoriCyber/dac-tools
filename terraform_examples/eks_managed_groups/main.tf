@@ -180,7 +180,9 @@ module "vpc_csi_ebs_irsa" {
 }
 
 
-
+################################################################################
+# DAC Role trusting policy
+################################################################################
 data "aws_iam_policy_document" "dac_role_assume_policy" {
   statement {
     effect  = "Allow"
@@ -196,7 +198,9 @@ data "aws_iam_policy_document" "dac_role_assume_policy" {
     }
   }
 }
-
+################################################################################
+# DAC Role permission policy
+################################################################################
 resource "aws_iam_policy" "assume_dac_service_role_policy" {
   name        = "${local.eks_name}-AssumeDACServiceRole"
   path        = "/"
@@ -221,7 +225,9 @@ EOF
 }
 
 
-
+################################################################################
+# DAC IAM Role 
+################################################################################
 resource "aws_iam_role" "dac_role" {
   name                 =  "${local.eks_name}-role"
   path                 = "/"
