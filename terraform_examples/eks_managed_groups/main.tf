@@ -29,13 +29,10 @@ provider "aws" {
 }
 
 
-
-data "aws_caller_identity" "current" {}
-
-
 ################################################################################
 # EKS Module
 ################################################################################
+# See all possbile paramateres for that module here https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.15.4"
@@ -142,6 +139,7 @@ module "eks" {
 ################################################################################
 # IAM role for CNI plugin
 ################################################################################
+
 module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
