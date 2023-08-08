@@ -29,13 +29,10 @@ provider "aws" {
 }
 
 
-
-data "aws_caller_identity" "current" {}
-
-
 ################################################################################
 # EKS Module
 ################################################################################
+# See all possbile paramateres for that module here https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.15.4"
@@ -142,6 +139,7 @@ module "eks" {
 ################################################################################
 # IAM role for CNI plugin
 ################################################################################
+
 module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
@@ -161,7 +159,7 @@ module "vpc_cni_irsa" {
 }
 
 ################################################################################
-# IAM role for CSI EBS addin driver
+# IAM role for CSI EBS addon driver
 ################################################################################
 module "vpc_csi_ebs_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
@@ -181,6 +179,9 @@ module "vpc_csi_ebs_irsa" {
 
 
 ################################################################################
+# Optional resoruce for DAC and AWS ingeration features
+################################################################################
+################################################################################
 # DAC Role trusting policy
 ################################################################################
 data "aws_iam_policy_document" "dac_role_assume_policy" {
@@ -198,6 +199,9 @@ data "aws_iam_policy_document" "dac_role_assume_policy" {
     }
   }
 }
+################################################################################
+# Optional resoruce for DAC and AWS ingeration features
+################################################################################
 ################################################################################
 # DAC Role permission policy
 ################################################################################
@@ -224,7 +228,9 @@ resource "aws_iam_policy" "assume_dac_service_role_policy" {
 EOF
 }
 
-
+################################################################################
+# Optional resoruce for DAC and AWS ingeration features
+################################################################################
 ################################################################################
 # DAC IAM Role 
 ################################################################################
