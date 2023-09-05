@@ -1,12 +1,13 @@
 ## Prerequisites:
-- terraform
-- docker
+Make sure the following tools are installed on your system:
+- Terraform
+- Docker
 
 ## Configure:
-Provide the values specified in values.tf file using the following methods:
-- input them after running tf apply
-- export them using TF_VALUES_\<varName>
-- provide values file and run terraform apply -var-file=\<valuesPath>
+Provision the values specified in values.tf file using one of the standard terraform methods:
+- Run ```terraform apply``` and provide values at the prompt
+- Export values via the shell using TF_VALUES_\<varName>
+- Create a values file and run ```terraform apply -var-file=\<valuesPath>```
 
 ## How to run:
 - terraform init
