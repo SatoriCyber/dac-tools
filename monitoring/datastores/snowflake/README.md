@@ -4,7 +4,7 @@ Make sure the following tools are installed on your system:
 - Docker
 
 ## Configure:
-Provision the values specified in values.tf file using one of the standard terraform methods:
+Provision the values specified in the values.tf file using one of the standard terraform methods:
 - Run ```terraform apply``` and provide values at the prompt
 - Export values via the shell using TF_VALUES_\<varName>
 - Create a values file and run ```terraform apply -var-file=\<valuesPath>```
