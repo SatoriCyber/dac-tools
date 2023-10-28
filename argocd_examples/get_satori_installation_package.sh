@@ -25,15 +25,12 @@ mkdir -p "${tmp_dir}/${satori_latest_version}-extracted" && tar -xvf "${tmp_dir}
 # Upload the bootstrap access key to the kubernetes secret
 # Note: this step can varybased on your environment, e.g. push the secret into vault and deploy into the cluster via alternative means
 cd "${tmp_dir}/${satori_latest_version}-extracted/"
-kubectl create namespace satori-runtime --save-config --dry-run=client -o yaml | kubectl apply -f -
-kubectl create secret generic dac-secrets-sa -n satori-runtime --save-config --dry-run=client --from-file="./dac-secrets-sa.json" -o yaml | kubectl apply -f -
 
+# Deprecated. In new versions we don't store any sensitive files.
 # Delete the sensitive bootstrap access key from the helm chart
 rm -f ./dac-secrets-sa.json
 rm -f ./satori-runtime/dac-secrets-sa.json
 
-# copy value files into the helm package
-cp ./version-values.yaml ./customer-override.yaml ./customer-values.yaml ./satori-runtime/
 
 # delete old package and copy the updates helm package to the local git repo
 rm -fr  "$REPO_PATH/satori_package" && mkdir -p "$REPO_PATH/satori_package"
@@ -42,8 +39,10 @@ cp -r ./satori-runtime/ "$REPO_PATH/satori_package"
 # cleanup tmp folder
 rm -fr "$tmp_dir"
 
-#push the updated repo to master
-push the git to the current branch
+
+# push the git to the current branch
+pushd $REPO_PATH
 git add . 
 git commit -m "Upgrade the satori DAC to version $satori_latest_version"
 git push origin
+popd
