@@ -6,7 +6,7 @@ locals {
   # change to desired eks name
   eks_name = "satori-cluster"
   # EKS version
-  cluster_version = "1.27"
+  cluster_version = "1.28"
   # Provide your VPC ID
   vpc_id = "vpc-1a1a1a1a1a1a1a1"
   # Provide 3 Subnet IDs .Should be 3 private |subnets in 3 diffrent Zones for HA

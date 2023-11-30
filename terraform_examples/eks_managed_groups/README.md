@@ -23,7 +23,7 @@ You have to replace few variable in the begging of the main.tf file
 
 `aws_account`: The AWS account number is used for the cluster creation.
 example - `123456789012`  
-`cluster_version`: The EKS version. For example `1.27`  
+`cluster_version`: The EKS version. For example `1.28`  
 `eks_name`: The EKS custer name for example `satori-dac-poc`  
 `region`: The AWS region, example - `us-east-1`  
 `vpc_id`: The existing VPC ID, example - `vpc-1a1a1a1a1a1a1a1`  

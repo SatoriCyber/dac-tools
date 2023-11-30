@@ -9,14 +9,14 @@ spec:
         outcomes:
           - fail:
               when: "< 1.23.0"
-              message: This application requires at least Kubernetes 1.23 or later but the 1.27 is recommended.
+              message: This application requires at least Kubernetes 1.23 or later but the 1.28 is recommended.
               uri: https://www.kubernetes.io
           - warn:
-              when: "< 1.27.0"
-              message: Your cluster meets the minimum version of Kubernetes, but we recommend you update to 1.27 or later.
+              when: "< 1.28.0"
+              message: Your cluster meets the minimum version of Kubernetes, but we recommend you update to 1.28 or later.
               uri: https://kubernetes.io
           - pass:
-              when: "> 1.27.0 || = 1.27.0"
+              when: "> 1.28.0 || = 1.28.0"
               message: Your cluster meets the recommended and required versions of Kubernetes.
     - storageClass:
         checkName: Check for default storage class
