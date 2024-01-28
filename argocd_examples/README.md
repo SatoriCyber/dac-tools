@@ -12,7 +12,12 @@ This is a bash script which performs the following:  ``
 
    Option A, providing  the `<SATORI_SERVICE_ID>` and `<SATORI_SERVICE_KEY>` as parameters to the helm command: `--values version-values.yaml --values customer-values.yaml --values customer-override.yaml --set service_accountid=<SATORI_SERVICE_ID> --set service_account_key=<SATORI_SERVICE_KEY>`
 
-   Option B, storing the `<SATORI_SERVICE_ID>` and `<SATORI_SERVICE_KEY>` as a kubernetes secret and provide the name of the kubernetes secret to the Helm command: `--values version-values.yaml --values customer-values.yaml --values customer-override.yaml --set service_account_secret=<SERVICE_ACCOUNT_SECRET_NAME>`.See [here](#External-secrets-operator-integration)  how to integrate the [external-secret operator](#External-secrets-operator-integration) with Satori helm chart to create service_account_secret dynamically.
+   Option B, storing the `<SATORI_SERVICE_ID>` and `<SATORI_SERVICE_KEY>` as a kubernetes secret, e.g.:
+   ```
+   "service_account.json" : "{"id": "<service-account-id>", "key": "<service-account-key>"}"
+   ```
+   To apply the secret use the following helm command: `--values version-values.yaml --values customer-values.yaml --values customer-override.yaml --set service_account_secret=<SERVICE_ACCOUNT_SECRET_NAME>`.
+   See [here](#External-secrets-operator-integration) on how to integrate the [external-secret operator](#External-secrets-operator-integration) with Satori helm chart to create service_account_secret dynamically.
      
 2. The `<SATORI_SERVICE_ID>` and `<SATORI_SERVICE_KEY>` should be obtained from the Satori management console. Since these parameters are sensitive, you must store them in a secured store and provide them to the ArgoCD dynamically.
 
