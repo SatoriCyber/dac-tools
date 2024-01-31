@@ -66,7 +66,7 @@ fi
 
 echo "Creating an AWS DAC with eksctl"
 # get eksctl.tar.gz
-curl --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" -o "eksctl.tar.gz"
+curl --location "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$(uname -s)_$(uname -m).tar.gz" -o "eksctl.tar.gz"
 # open the tar.gz
 tar zxfv eksctl.tar.gz
 
