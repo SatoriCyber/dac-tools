@@ -24,6 +24,9 @@ To install the HELM , please follow these instructions: https://helm.sh/docs/int
 ## Supported platforms
 The script and tools can run on `bash` or `zsh` shells.
 
+## AWS credentials expiration  
+The EKS creation is a long running process which might take 30-50 minutes. You must ensure that you are authenticated to AWS with credentials which are valid for at least 1 hour in order to allow the script to finish successfully. 
+
 ## Minimum permissions required for running this tool
   If you use `EXISTING_VPC=true` the minimum IAM policies required to run are [here](./aws_required_policies/iam_eks_policy.json) and [here](./aws_required_policies/limited_ec2_policy.json)
   If you use `EXISTING_VPC=false` you need full ec2 permissions, therefore the minimum IAM policies required to run are [here](./aws_required_policies/iam_eks_policy.json) and [here](./aws_required_policies/full_ec2_policy.json)
@@ -76,7 +79,7 @@ Three public subnets:
 `PUBLIC_SUB3_ID`  
   
 We highly recommend providing subnets in three different availability zones.  
-If you use an existing VPC, you MUST (!!!) tag subnets allow the EKS to create load balancers correctly, othwerwise load balancers might stuck in  the pending state:
+If you use an existing VPC, you MUST (!!!) tag subnets allow the EKS to create load balancers correctly, otherwise load balancers might stuck in  the pending state:
 
 Set tag `kubernetes.io/cluster/<name>` to either shared
 Set tag `kubernetes.io/role/internal-elb` to 1 for private subnets
