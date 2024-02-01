@@ -6,10 +6,10 @@ AWS EKS is a managed Kubernetes solution. The creation has shifted to an open-so
 
 The script is intended to run in bash shell.
 ## Prerequisites
-`eksctl`: Please download and install the tool for your platform as described here 
+`eksctl`: Please download and install the tool for your platform as described here https://eksctl.io/installation/
 
 `kubectl`: While cluster creation runs with the eksctl tool, access to the cluster and the deployment of SatoriCyber software will be done with this tool.
-https://eksctl.io/installation/
+https://kubernetes.io/docs/tasks/tools/install-kubectl/
 
 `Helm v3`: The helm is used to install additional operators for AWS EKS proper functionality:
   1. Metrics server. https://github.com/kubernetes-sigs/metrics-server
@@ -20,6 +20,9 @@ https://eksctl.io/installation/
 https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
 
 To install the HELM , please follow these instructions: https://helm.sh/docs/intro/install/
+
+## Supported platforms
+The script and tools can run on `bash` or `zsh` shells.
 
 ## Minimum permissions required for running this tool
   If you use `EXISTING_VPC=true` the minimum IAM policies required to run are [here](./aws_required_policies/iam_eks_policy.json) and [here](./aws_required_policies/limited_ec2_policy.json)
