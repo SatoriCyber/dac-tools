@@ -6,8 +6,7 @@ AWS EKS is a managed Kubernetes solution. The creation has shifted to an open-so
 
 The script is intended to run in bash shell.
 ## Prerequisites
-`eksctl`: Please download and install the tool for your platform as described here 
-https://eksctl.io/installation/
+`eksctl`: Please download and install the tool for your platform as described here https://eksctl.io/installation/
 
 `kubectl`: While cluster creation runs with the eksctl tool, access to the cluster and the deployment of SatoriCyber software will be done with this tool.
 https://kubernetes.io/docs/tasks/tools/install-kubectl/
