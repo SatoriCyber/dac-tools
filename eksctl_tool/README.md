@@ -22,6 +22,9 @@ https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
 
 To install the HELM , please follow these instructions: https://helm.sh/docs/intro/install/
 
+## Supported platforms:
+The script and tools can run on bash or zsh shells.
+
 ## Minimum permissions required for running this tool
   If you use `EXISTING_VPC=true` the minimum IAM policies required to run are [here](./aws_required_policies/iam_eks_policy.json) and [here](./aws_required_policies/limited_ec2_policy.json)
   If you use `EXISTING_VPC=false` you need full ec2 permissions, therefore the minimum IAM policies required to run are [here](./aws_required_policies/iam_eks_policy.json) and [here](./aws_required_policies/full_ec2_policy.json)
