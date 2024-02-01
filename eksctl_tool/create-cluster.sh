@@ -55,6 +55,13 @@ then
     exit 1
 fi
 
+if ! command -v eksctl &> /dev/null
+then
+    echo "The eksctl is required by isn't isntalled"
+    echo "Please download the eksctl version for your platform here https://github.com/eksctl-io/eksctl/releases/"
+    exit 1
+fi
+
 connected_account=$(aws sts get-caller-identity --query Account | tr -d '"')
 
 if [ "$ACCOUNT_NUMBER" != "$connected_account" ] ; then
@@ -63,14 +70,6 @@ if [ "$ACCOUNT_NUMBER" != "$connected_account" ] ; then
    echo -e "Configured account: $ACCOUNT_NUMBER"
    exit 1
 fi
-
-echo "Creating an AWS DAC with eksctl"
-# get eksctl.tar.gz
-curl --location "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$(uname -s)_$(uname -m).tar.gz" -o "eksctl.tar.gz"
-# open the tar.gz
-tar zxfv eksctl.tar.gz
-
-
 
 
 
