@@ -11,13 +11,13 @@ echo "The temp dir is: $tmp_dir"
 echo "The git repo path is: $REPO_PATH"
 
 # Obtain the authentication bearer
-export satori_bearer=$(curl -s -X POST -H 'Content-Type: application/json'  https://app.satoricyber.info/api/authentication/token -d '{ "serviceAccountId": "'$SATORI_SERVICE_ID'", "serviceAccountKey": "'$SATORI_SERVICE_KEY'"}' | jq -r .token)
+export satori_bearer=$(curl -s -X POST -H 'Content-Type: application/json'  https://app.satoricyber.com/api/authentication/token -d '{ "serviceAccountId": "'$SATORI_SERVICE_ID'", "serviceAccountKey": "'$SATORI_SERVICE_KEY'"}' | jq -r .token)
 
 # Get the recomended latest package version
-export satori_latest_version=$(curl -s -H "Accept: application/json" -H "Authorization: Bearer ${satori_bearer}" -X GET https://app.satoricyber.info/api/v1/data-access-controllers/package/releases | jq -r '.records[] | select(.type=="RECOMMENDED") | .version ')
+export satori_latest_version=$(curl -s -H "Accept: application/json" -H "Authorization: Bearer ${satori_bearer}" -X GET https://app.satoricyber.com/api/v1/data-access-controllers/package/releases | jq -r '.records[] | select(.type=="RECOMMENDED") | .version ')
 echo "The latest DAC version is: $satori_latest_version"
 # Download the package
-curl -s -H "Authorization: Bearer ${satori_bearer}" -X GET "https://app.satoricyber.info/api/v1/data-access-controllers/${DAC_ID}/package/download?version=${satori_latest_version}" -o "${tmp_dir}/${satori_latest_version}.tar"
+curl -s -H "Authorization: Bearer ${satori_bearer}" -X GET "https://app.satoricyber.com/api/v1/data-access-controllers/${DAC_ID}/package/download?version=${satori_latest_version}" -o "${tmp_dir}/${satori_latest_version}.tar"
 
 #Extract the tar
 mkdir -p "${tmp_dir}/${satori_latest_version}-extracted" && tar -xvf "${tmp_dir}/${satori_latest_version}.tar" -C "${tmp_dir}/${satori_latest_version}-extracted/" --strip-components 1
