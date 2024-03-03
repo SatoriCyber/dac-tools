@@ -26,12 +26,6 @@ mkdir -p "${tmp_dir}/${satori_latest_version}-extracted" && tar -xvf "${tmp_dir}
 # Note: this step can varybased on your environment, e.g. push the secret into vault and deploy into the cluster via alternative means
 cd "${tmp_dir}/${satori_latest_version}-extracted/"
 
-# Deprecated. In new versions we don't store any sensitive files.
-# Delete the sensitive bootstrap access key from the helm chart
-rm -f ./dac-secrets-sa.json
-rm -f ./satori-runtime/dac-secrets-sa.json
-
-
 # delete old package and copy the updates helm package to the local git repo
 rm -fr  "$REPO_PATH/satori_package" && mkdir -p "$REPO_PATH/satori_package"
 cp -r ./satori-runtime/ "$REPO_PATH/satori_package"
