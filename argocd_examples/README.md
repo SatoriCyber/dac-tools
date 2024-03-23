@@ -18,7 +18,26 @@ This is a bash script which performs the following:  ``
    ```
    To use the secret by helm chart specify the following helm parameters: `--values version-values.yaml --values customer-values.yaml --values customer-override.yaml --set service_account_secret=<SERVICE_ACCOUNT_SECRET_NAME>`.
    See [here](#External-secrets-operator-integration) on how to integrate the [external-secret operator](#External-secrets-operator-integration) with Satori helm chart to create service_account_secret dynamically.
-     
+A sample for the ArgoCD application defitinition for Satori DAC deployment:
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: satori-runtime
+  namespace: satori-runtime
+spec:
+  project: satori-runtime
+  source:
+    chart: satori-runtime
+    repoURL: https://my-github-repo.github.io/satori-runtime
+    targetRevision: 1.2415
+    helm:
+      releaseName: runtime
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: satori-runtime
+```
+
 2. The `<SATORI_SERVICE_ID>` and `<SATORI_SERVICE_KEY>` should be obtained from the Satori management console. Since these parameters are sensitive, you must store them in a secured store and provide them to the ArgoCD dynamically.
 
 
