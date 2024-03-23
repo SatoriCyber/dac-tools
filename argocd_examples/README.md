@@ -17,8 +17,13 @@ This is a bash script which performs the following:  ``
    "service_account.json" : "{"id": "<service-account-id>", "key": "<service-account-key>"}"
    ```
    To use the secret by helm chart specify the following helm parameters: `--values version-values.yaml --values customer-values.yaml --values customer-override.yaml --set service_account_secret=<SERVICE_ACCOUNT_SECRET_NAME>`.
-   See [here](#External-secrets-operator-integration) on how to integrate the [external-secret operator](#External-secrets-operator-integration) with Satori helm chart to create service_account_secret dynamically.
-A sample for the ArgoCD application defitinition for Satori DAC deployment:
+   See [here](#External-secrets-operator-integration) on how to integrate the [external-secret operator](#External-secrets-operator-integration) with Satori helm chart to create service_account_secret dynamically.  
+2. The `<SATORI_SERVICE_ID>` and `<SATORI_SERVICE_KEY>` should be obtained from the Satori management console. Since these parameters are sensitive, you must store them in a secured store and provide them to the ArgoCD dynamically.
+
+Note: The assumption that the git repo is tracked by ArgoCD, so the `git push` will trigger the ArgoCD helm reconciliation with the actual deployment.  
+The script performs git push to a current branch. Consider changing it according to your company policy.  
+
+A sample for the ArgoCD application defitinition for Satori DAC deployment:  
 ```
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -36,13 +41,7 @@ spec:
   destination:
     server: "https://kubernetes.default.svc"
     namespace: satori-runtime
-```
-
-2. The `<SATORI_SERVICE_ID>` and `<SATORI_SERVICE_KEY>` should be obtained from the Satori management console. Since these parameters are sensitive, you must store them in a secured store and provide them to the ArgoCD dynamically.
-
-
-Note: The assumption that the git repo is tracked by ArgoCD, so the `git push` will trigger the ArgoCD helm reconciliation with the actual deployment.  
-The script performs git push to a current branch. Consider changing it according to your company policy.
+```  
 
 ## Prerequisites
 
