@@ -23,7 +23,7 @@ This is a bash script which performs the following:
 Note: The assumption that the git repo is tracked by ArgoCD, so the `git push` will trigger the ArgoCD helm reconciliation with the actual deployment.  
 The script performs git push to a current branch. Consider changing it according to your company policy.  
 
-A sample for the ArgoCD application defitinition for Satori DAC deployment:  
+A sample for the ArgoCD application definition for Satori DAC deployment:  
 ```
 apiVersion: argoproj.io/v1alpha1
 kind: Application
