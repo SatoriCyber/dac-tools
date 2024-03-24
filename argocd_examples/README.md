@@ -1,6 +1,6 @@
 # ArgoCD integration
 
-This is a bash script which performs the following:  ``
+This is a bash script which performs the following:  
 
 1. Discovers the latest stable version for Satori DAC.  
 2. Downloads the package to a temprorary directory and extracts it from the tarball.  
