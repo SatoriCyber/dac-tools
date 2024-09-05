@@ -38,6 +38,10 @@ spec:
     targetRevision: 1.2415
     helm:
       releaseName: runtime
+      valueFiles:
+      - version-values.yaml
+      - customer-values.yaml
+      - customer-override.yaml
   destination:
     server: "https://kubernetes.default.svc"
     namespace: satori-runtime
