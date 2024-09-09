@@ -10,7 +10,7 @@ This is a bash script which performs the following:
 
 1. Make sure that the ArgoCD apply the helm chart with the following value files and in exact order:  
 
-   Option A, providing  the `<SATORI_SERVICE_ID>` and `<SATORI_SERVICE_KEY>` as parameters to the helm command: `--values version-values.yaml --values customer-values.yaml --values customer-override.yaml --set service_accountid=<SATORI_SERVICE_ID> --set service_account_key=<SATORI_SERVICE_KEY>`
+   Option A, providing  the `<SATORI_SERVICE_ID>` and `<SATORI_SERVICE_KEY>` as parameters to the helm command: `--values version-values.yaml --values customer-values.yaml --values customer-override.yaml --set service_account_id=<SATORI_SERVICE_ID> --set service_account_key=<SATORI_SERVICE_KEY>`
 
    Option B, storing the `<SATORI_SERVICE_ID>` and `<SATORI_SERVICE_KEY>` as a kubernetes secret, e.g.:
    ```
