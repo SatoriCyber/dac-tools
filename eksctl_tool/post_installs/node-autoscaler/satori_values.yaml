@@ -13,7 +13,6 @@ extraArgs:
   v: 4
   # write-status-configmap: true
   # status-config-map-name: cluster-autoscaler-status
-  leader-elect: true
   skip-nodes-with-local-storage: false
   expander: least-waste
   # scale-down-enabled: true

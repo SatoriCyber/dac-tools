@@ -7,11 +7,6 @@ echo $CLUSTER_NAME
 echo $AWS_REGION
 echo $ACCOUNT_NUMBER
 
-echo "Installing metrics server"
-helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
-helm repo update 
-helm upgrade -i metrics-server -n kube-system --debug metrics-server/metrics-server
-
 
 echo "Installing node autoscaler"
 
