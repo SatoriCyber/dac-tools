@@ -3,7 +3,7 @@ set -e
 
 # Please fill the following paramaters
 ACCOUNT_NUMBER="1234567890"
-EKS_VERSION="1.28"
+EKS_VERSION="1.32"
 CLUSTER_NAME="satori-dac-poc"
 AWS_REGION="zz-xxxx-2"
 

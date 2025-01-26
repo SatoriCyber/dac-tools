@@ -7,6 +7,10 @@ metadata:
 availabilityZones: ["ZONE_A", "ZONE_B", "ZONE_C"]
 
 
+# if you want to enable kubernetes secret encryption, create a KMS key, uncomment these lines and set the KMS key ARN
+# secretsEncryption:
+#  keyARN: "arn:aws:kms:us-west-2:000000000000:key/00000000-0000-0000-0000-000000000000"
+
 iam:
   withOIDC: true
   serviceAccounts:
@@ -40,7 +44,10 @@ managedNodeGroups:
       # EC2 tags required for cluster-autoscaler auto-discovery
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/CLUSTER_NAME: "owned"
-    instanceType: m6i.large 
+    nodeRepairConfig:
+      enabled: true
+    amiFamily: AmazonLinux2023
+    instanceType: m6i.large
     minSize: 1
     maxSize: 5
     volumeSize: 50
@@ -56,7 +63,10 @@ managedNodeGroups:
       # EC2 tags required for cluster-autoscaler auto-discovery
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/CLUSTER_NAME: "owned"
-    instanceType: m6i.large 
+    nodeRepairConfig:
+      enabled: true
+    instanceType: m6i.large
+    amiFamily: AmazonLinux2023
     minSize: 1
     maxSize: 5
     volumeSize: 50
@@ -72,7 +82,10 @@ managedNodeGroups:
       # EC2 tags required for cluster-autoscaler auto-discovery
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/CLUSTER_NAME: "owned"
+    nodeRepairConfig:
+      enabled: true
     instanceType: m6i.large 
+    amiFamily: AmazonLinux2023
     minSize: 1
     maxSize: 5
     volumeSize: 50
@@ -95,6 +108,10 @@ addons:
 - name: coredns
   version: latest
 - name: kube-proxy
+  version: latest
+- name: eks-node-monitoring-agent
+  version: latest
+- name: metrics-server
   version: latest
 
 vpc:
