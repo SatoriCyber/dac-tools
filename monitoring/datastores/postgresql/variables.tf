@@ -24,5 +24,5 @@ variable "postgresql_satori_port" {
 
 variable "cron_interval" {
   description = "the trigger frequency of the lambda in minutes"
-  default = "60"
+  default     = "60"
 }

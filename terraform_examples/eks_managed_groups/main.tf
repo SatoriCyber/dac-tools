@@ -6,16 +6,31 @@ locals {
   # change to desired eks name
   eks_name = "satori-cluster"
   # EKS version
-  cluster_version = "1.28"
+  cluster_version = "1.32"
   # Provide your VPC ID
   vpc_id = "vpc-1a1a1a1a1a1a1a1"
   # Provide 3 Subnet IDs .Should be 3 private |subnets in 3 diffrent Zones for HA
   private_subnet_ids = ["subnet-2b2b2b2b2b2b2b", "subnet-3c3c3c3c3c3c3c3c", "subnet-4e4e4e4e4e4e4e4e4e"]
 
-  #additonal args for kubelet memory and CPU reservation
-  bootstrap_extra_args = "--system-reserved cpu=50m,memory=250Mi,ephemeral-storage=1Gi --eviction-hard memory.available<0.2Gi,nodefs.available<10%%"
+  # additional resource reservation for EKS nodes 
+  eks_default_node_config = <<-EOT
+          ---
+          apiVersion: node.eks.aws/v1alpha1
+          kind: NodeConfig
+          spec:
+            kubelet:
+              config:
+                kubeReserved:
+                  cpu: 100m
+                  memory: 850Mi
+                systemReserved:
+                  cpu: 100m
+                  memory: 300Mi
+                evictionHard:
+                  memory.available: 400Mi
+        EOT
   # instance type
-  instance_types       = ["m6i.large"]
+  instance_types = ["m6i.large"]
   tags = {
     eks = local.eks_name
   }
@@ -35,7 +50,7 @@ provider "aws" {
 # See all possbile paramateres for that module here https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.15.4"
+  version = "20.36.0"
 
   eks_managed_node_groups = {
     # Default node group - as provided by AWS EKS
@@ -49,10 +64,13 @@ module "eks" {
       subnet_ids = try([local.private_subnet_ids[2]], [local.private_subnet_ids[0]])
     }
   }
-  cluster_name                    = local.eks_name
-  cluster_version                 = local.cluster_version
-  cluster_endpoint_public_access  = true
-  cluster_endpoint_private_access = true
+  cluster_name                             = local.eks_name
+  cluster_version                          = local.cluster_version
+  cluster_endpoint_public_access           = true
+  cluster_endpoint_private_access          = true
+  authentication_mode                      = "API_AND_CONFIG_MAP"
+  enable_cluster_creator_admin_permissions = true
+  enable_irsa                              = true
 
   cluster_addons = {
     coredns = {
@@ -70,7 +88,7 @@ module "eks" {
       tags                     = {}
       configuration_values = jsonencode({
         env = {
-          # don't reserve to many IP addresses
+          # don't reserve too many IP addresses
           # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
           ENABLE_PREFIX_DELEGATION = "true"
           WARM_PREFIX_TARGET       = "1"
@@ -81,51 +99,60 @@ module "eks" {
       most_recent              = true
       service_account_role_arn = module.vpc_csi_ebs_irsa.iam_role_arn
       tags                     = {}
+      configuration_values = jsonencode({
+        "defaultStorageClass" : { "enabled" : true }
+      })
+    }
+    eks-node-monitoring-agent = {
+      most_recent = true
+      tags        = {}
     }
   }
+
+
+
 
   vpc_id     = local.vpc_id
   subnet_ids = local.private_subnet_ids
 
 
   eks_managed_node_group_defaults = {
-    ami_type                   = "AL2_x86_64"
+    ami_type                   = "AL2023_x86_64_STANDARD"
     instance_types             = local.instance_types
     disk_size                  = 50
     tags                       = local.tags
     ebs_optimized              = true
     labels                     = {}
     enable_bootstrap_user_data = false
-    pre_bootstrap_user_data    = <<-EOT
-        #!/bin/bash -e
-
-        # Set bootstrap env
-        printf '#!/bin/bash
-        export ADDITIONAL_KUBELET_EXTRA_ARGS="${local.bootstrap_extra_args}"
-        ' > /etc/profile.d/eks-bootstrap-env.sh
-
-        # Source extra environment variables in bootstrap script
-        sed -i '/^set -o errexit/a\\nsource /etc/profile.d/eks-bootstrap-env.sh' /etc/eks/bootstrap.sh
-
-        # Merge ADDITIONAL_KUBELET_EXTRA_ARGS into KUBELET_EXTRA_ARGS
-        sed -i 's/^KUBELET_EXTRA_ARGS="$${KUBELET_EXTRA_ARGS:-}/KUBELET_EXTRA_ARGS="$${KUBELET_EXTRA_ARGS:-} $${ADDITIONAL_KUBELET_EXTRA_ARGS}/' /etc/eks/bootstrap.sh
-    EOT
-
-
+    node_repair_config = {
+      enabled = true
+    }
+    metadata_options = {
+      http_endpoint               = "enabled"
+      http_tokens                 = "required"
+      http_put_response_hop_limit = 2
+    }
     create_launch_template     = true
     min_size                   = 1
     max_size                   = 3
     desired_size               = 1
     iam_role_attach_cni_policy = false
     use_name_prefix            = true
+    cloudinit_pre_nodeadm = [
+      {
+        content_type = "application/node.eks.aws"
+        content      = local.eks_default_node_config
+      }
+    ]
 
     block_device_mappings = {
       xvda = {
         device_name = "/dev/xvda"
         ebs = {
-          volume_size           = 50
-          encrypted             = true
           delete_on_termination = true
+          encrypted             = true
+          volume_size           = 50
+          volume_type           = "gp3"
         }
       }
     }
@@ -175,6 +202,7 @@ module "vpc_csi_ebs_irsa" {
     }
   }
   tags = local.tags
+
 }
 
 
@@ -235,11 +263,11 @@ EOF
 # DAC IAM Role 
 ################################################################################
 resource "aws_iam_role" "dac_role" {
-  name                 =  "${local.eks_name}-role"
-  path                 = "/"
-  assume_role_policy   = data.aws_iam_policy_document.dac_role_assume_policy.json
-  managed_policy_arns  = [aws_iam_policy.assume_dac_service_role_policy.arn]
-  description          = "Role used by Satori DAC to call cloud APIs"
+  name                = "${local.eks_name}-role"
+  path                = "/"
+  assume_role_policy  = data.aws_iam_policy_document.dac_role_assume_policy.json
+  managed_policy_arns = [aws_iam_policy.assume_dac_service_role_policy.arn]
+  description         = "Role used by Satori DAC to call cloud APIs"
 
   tags = local.tags
 }

@@ -105,6 +105,7 @@ addons:
   version: latest
   attachPolicyARNs:
     - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
+  configurationValues: "{\"defaultStorageClass\":{\"enabled\":true}}"
 - name: coredns
   version: latest
 - name: kube-proxy
